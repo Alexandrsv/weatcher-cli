@@ -1,7 +1,12 @@
 #!/usr/bin/env node
 
 import { getArgs } from "./helpers/args.js";
-import { printError, printHelp, printSuccess } from "./services/log.service.js";
+import {
+  printError,
+  printHelp,
+  printSuccess,
+  printWeather,
+} from "./services/log.service.js";
 import { saveKeyValue, TOKEN_DICTIONARY } from "./services/storage.sevice.js";
 import { getWeather } from "./services/api.servece.js";
 
@@ -18,14 +23,30 @@ const saveToken = async (token) => {
   }
 };
 
+const saveCity = async (city) => {
+  if (!city.length) {
+    printError("Не передан город");
+    return;
+  }
+  try {
+    await saveKeyValue(TOKEN_DICTIONARY.city, city);
+    printSuccess("City saved successfully");
+  } catch (error) {
+    printError(error.message);
+  }
+};
+
 const getForcast = async () => {
   try {
-    const weather = await getWeather(process.env.CITY);
-    console.log(weather);
+    const weather = await getWeather();
+    printWeather(weather);
   } catch (error) {
     if (error?.response?.status === 401) {
       printError("Неверный токен");
-    } else if (error?.response?.status === 404) {
+    } else if (
+      error?.response?.status === 404 ||
+      error?.response?.status === 400
+    ) {
       printError("Не найден город");
     } else {
       printError(error.message);
@@ -35,11 +56,6 @@ const getForcast = async () => {
 
 const initCLI = () => {
   const args = getArgs();
-  console.log({ args });
-  // if (Object.keys(args).length === 0) {
-  //   console.log("Please provide a city name");
-  //   return;
-  // }
 
   if (args.h) {
     printHelp();
@@ -47,7 +63,7 @@ const initCLI = () => {
   }
 
   if (args.s) {
-    console.log("Searching for city...");
+    return saveCity(args.s);
   }
 
   if (args.t) {
