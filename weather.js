@@ -18,13 +18,28 @@ const saveToken = async (token) => {
   }
 };
 
+const getForcast = async () => {
+  try {
+    const weather = await getWeather(process.env.CITY);
+    console.log(weather);
+  } catch (error) {
+    if (error?.response?.status === 401) {
+      printError("Неверный токен");
+    } else if (error?.response?.status === 404) {
+      printError("Не найден город");
+    } else {
+      printError(error.message);
+    }
+  }
+};
+
 const initCLI = () => {
   const args = getArgs();
   console.log({ args });
-  if (Object.keys(args).length === 0) {
-    console.log("Please provide a city name");
-    return;
-  }
+  // if (Object.keys(args).length === 0) {
+  //   console.log("Please provide a city name");
+  //   return;
+  // }
 
   if (args.h) {
     printHelp();
@@ -38,8 +53,8 @@ const initCLI = () => {
   if (args.t) {
     return saveToken(args.t);
   }
-
+  getForcast();
   //Вывести погоду в заданном городе
-  getWeather(args.s);
+  // getWeather(args.s);
 };
 initCLI();
