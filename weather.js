@@ -2,6 +2,7 @@
 
 import { getArgs } from "./helpers/args.js";
 import { printHelp } from "./services/log.service.js";
+import { saveKeyValue } from "./services/storage.sevice.js";
 
 const initCLI = () => {
   const args = getArgs();
@@ -20,6 +21,7 @@ const initCLI = () => {
   }
   if (args.t) {
     console.log("Save token");
+    saveKeyValue("token", args.t);
   }
 
   //Вывести погоду в заданном городе
