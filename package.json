@@ -1,18 +1,23 @@
 {
-  "name": "weather-cli",
-  "version": "1.0.0",
-  "description": "",
-  "main": "weather.js",
+  "name": "weather-cli-example",
+  "version": "1.0.2",
+  "description": "CLI for getting weather information from openweathermap.org",
+  "main": "weather-cli-example.js",
   "bin": {
-    "weather": "weather.js"
+    "weather-cli": "weather-cli-example.js"
   },
   "type": "module",
   "scripts": {
-    "start": "node weather.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node weather-cli-example.js"
   },
-  "author": "",
+  "keywords": [
+    "weather",
+    "cli",
+    "openweathermap"
+  ],
+  "author": "Alexandr S",
   "license": "ISC",
+  "homepage": "https://github.com/Alexandrsv/weatcher-cli",
   "repository": {
     "type": "git",
     "url": "https://github.com/Alexandrsv/weatcher-cli.git"
