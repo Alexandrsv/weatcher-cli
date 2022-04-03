@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 
 import { getArgs } from "./helpers/args.js";
+import { printHelp } from "./services/log.service.js";
 
 const initCLI = () => {
   const args = getArgs();
@@ -11,15 +12,7 @@ const initCLI = () => {
   }
 
   if (args.h) {
-    console.log(
-      "Usage: weather -s [city]" +
-        "\n" +
-        "Options:" +
-        "\n" +
-        "-s: Search for a city" +
-        "\n" +
-        "-t: Save api token"
-    );
+    printHelp();
     return;
   }
   if (args.s) {
