@@ -1,8 +1,17 @@
 #!/usr/bin/env node
 
 import { getArgs } from "./helpers/args.js";
-import { printHelp } from "./services/log.service.js";
+import { printError, printHelp, printSuccess } from "./services/log.service.js";
 import { saveKeyValue } from "./services/storage.sevice.js";
+
+const saveToken = async (token) => {
+  try {
+    await saveKeyValue("token", token);
+    printSuccess("Token saved successfully");
+  } catch (error) {
+    printError(error.message);
+  }
+};
 
 const initCLI = () => {
   const args = getArgs();
@@ -16,12 +25,13 @@ const initCLI = () => {
     printHelp();
     return;
   }
+
   if (args.s) {
     console.log("Searching for city...");
   }
+
   if (args.t) {
-    console.log("Save token");
-    saveKeyValue("token", args.t);
+    return saveToken(args.t);
   }
 
   //Вывести погоду в заданном городе
