@@ -2,11 +2,16 @@
 
 import { getArgs } from "./helpers/args.js";
 import { printError, printHelp, printSuccess } from "./services/log.service.js";
-import { saveKeyValue } from "./services/storage.sevice.js";
+import { saveKeyValue, TOKEN_DICTIONARY } from "./services/storage.sevice.js";
+import { getWeather } from "./services/api.servece.js";
 
 const saveToken = async (token) => {
+  if (!token.length) {
+    printError("Не передан токен");
+    return;
+  }
   try {
-    await saveKeyValue("token", token);
+    await saveKeyValue(TOKEN_DICTIONARY.token, token);
     printSuccess("Token saved successfully");
   } catch (error) {
     printError(error.message);
@@ -35,5 +40,6 @@ const initCLI = () => {
   }
 
   //Вывести погоду в заданном городе
+  getWeather(args.s);
 };
 initCLI();
